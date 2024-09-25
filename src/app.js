@@ -1,14 +1,33 @@
 const express= require("express");
 const app=express();
-app.get("/user",(req,res)=>{
-    res.send({firstname:"Satvik",lastname:"Patil"})
-})
-app.post("/user",(req,res)=>{
-    res.send("Data will successfully  save to the database")
-})
-app.delete("/user",(req,res)=>{
-    res.send("Data will be successfully deleted ");
-})
+app.use("/user",(req,res,next)=>{
+    next();
+    // res.send("Response");
+},(req,res,next)=>{
+    // res.send(" 2nd Response ");
+    next();
+    console.log("helpr");    
+},(req,res,next)=>{
+    // res.send(" 3rd Response ");
+    next();
+    console.log("helpr");    
+},(req,res,next)=>{
+    // res.send(" 4th Response ");
+    next();
+    console.log("helpr");    
+},(req,res,next)=>{
+    // res.send(" 5th Response ");
+    next();
+    console.log("helpr");    
+}
+
+
+
+
+
+
+
+)
 app.listen(3000,()=>{
     console.log("server will be successfully exected on  port 7777");
 }); 
