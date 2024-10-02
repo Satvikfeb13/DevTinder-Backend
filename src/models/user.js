@@ -43,9 +43,10 @@ const userSchema= new mongoose.Schema({
         default:"This is  default about user!"
     },
     skills:{
-        type:[String]
+        type:[String],
     }
 },{
-    timestamps:true
+    timestamps:true,
+
 })
 module.exports=mongoose.model("User",userSchema);
