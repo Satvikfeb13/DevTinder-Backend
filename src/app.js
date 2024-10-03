@@ -2,14 +2,22 @@ const express= require("express");
 const connectDB=require("./Config/database.js")
 const app=express();
 const User=require("./models/user.js");
+const {validateSiguUpdata}=require("./Utils/validation.js")
 app.use(express.json());
 app.post("/signup",async(req,res)=>{
-    const user= new User(req.body);
+    // validation of the data 4
     try{
+    validateSiguUpdata(req);
+
+    // Encrypt password
+
+    // store the user to the database
+    const user= new User(req.body);
+
         await user.save();
         res.send("user added successfully");
     }catch(err){
-        res.status(400).send("Error saving the user:"+err.message);
+        res.status(400).send("Error :"+err.message);
     }
 })
 app.get("/user",async(req,res)=>{
@@ -77,7 +85,7 @@ app.patch("/user-update/:userId",async(req,res)=>{
             throw new Error("Update not allowed");
         }
         if(data?.skills.length>10) {
-            throw new Error("Skills cannot be more than 10")
+            throw new Error("Skills cannot be more than 10")    
         }
         await User.findByIdAndUpdate({_id:userId},data,{
             returnDocument:"after",

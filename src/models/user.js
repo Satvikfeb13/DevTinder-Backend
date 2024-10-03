@@ -1,4 +1,5 @@
 const mongoose=require("mongoose");
+const validator=require("validator");
 
 const userSchema= new mongoose.Schema({
     firstName:{
@@ -15,11 +16,21 @@ const userSchema= new mongoose.Schema({
         lowercase:true,
         require:true,
         unique:true,
-        trim:true
+        trim:true,
+        validate(value){
+            if(!validator.isEmail(value)){
+                throw new Error("Invalid Email address: "+value)
+            }
+        }
     },
     password:{
         type:String,
-        require:true 
+        require:true ,
+        validate(value){
+            if(!validator.isStrongPassword(value)){
+                throw new Error("Enter a Strong Password: "+value)
+            }
+        }
     },
     age:{
         type:Number,
@@ -36,7 +47,11 @@ const userSchema= new mongoose.Schema({
     },
     photourl:{
         type:String,
-        default:"https://api.api-ninjas.com/v1/randomimage?category=nature"
+        validate(value){
+            if(!validator.isURLl(value)){
+                throw new Error("Invalid URL : "+value)
+            }
+        }
     },
     about:{
         type:String,
