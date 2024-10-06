@@ -26,6 +26,26 @@ app.post("/signup",async(req,res)=>{
         res.status(400).send("Error :"+err.message);
     }
 })
+app.post("/login",async(req,res)=>{
+    try{
+        const {emailId,password}=req.body;
+        const user=await User.findOne({emailId:emailId});
+        if(!user){
+            throw new Error("Invalid Credential");
+        }
+        const ispasswordvalid=await bcrypt.compare(password,user.password);
+        if(ispasswordvalid){
+            res.cookie("token","ashdjhahsdjhsajdhjhsadhjshmynameiasarssatviksatvvik")
+            res.send("Login successfully")
+        }else{
+            throw new Error("Invalid Credential ")
+        }
+
+
+    }catch(err){
+        res.status(400).send("Error :"+err.message);
+    }
+})
 app.get("/user",async(req,res)=>{
     const userEmail=req.body.emailId;
     const user= await User.find({emailId:userEmail});
