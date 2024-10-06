@@ -3,16 +3,22 @@ const connectDB=require("./Config/database.js")
 const app=express();
 const User=require("./models/user.js");
 const {validateSiguUpdata}=require("./Utils/validation.js")
+const bcrypt=require("bcrypt");  
 app.use(express.json());
 app.post("/signup",async(req,res)=>{
     // validation of the data 4
     try{
     validateSiguUpdata(req);
+    const{firstName,lastName,emailId,password}=req.body;
 
     // Encrypt password
+    const passwordHash= await bcrypt.hash(password,10);
+
 
     // store the user to the database
-    const user= new User(req.body);
+    const user= new User({
+        firstName,lastName,emailId,password:passwordHash
+    });
 
         await user.save();
         res.send("user added successfully");
