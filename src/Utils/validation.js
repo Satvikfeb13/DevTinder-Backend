@@ -1,5 +1,5 @@
 const validation=require("validator");
-const validateSiguUpdata=(req)=>{
+const validateSignUpdata=(req)=>{
     const{firstName,lastName,password,emailId}=req.body;
     if(!firstName || !lastName){
         throw new Error("Name is not valid ")
@@ -9,4 +9,4 @@ const validateSiguUpdata=(req)=>{
         throw new Error("Please Enter a Strong password ") 
     }
 }
-module.exports={validateSiguUpdata}
+module.exports={validateSignUpdata}
