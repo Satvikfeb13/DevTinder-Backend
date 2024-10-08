@@ -7,9 +7,9 @@ const bcrypt=require("bcrypt");
 const cookiepasrser=require("cookie-parser");
 const jwt=require("jsonwebtoken");
 const user = require("./models/user.js");
+const {userauth}=require("./middlewares/auth.js");
 app.use(express.json());
-app.use(cookiepasrser());
-
+app.use(cookiepasrser()); 
 app.post("/signup",async(req,res)=>{
     // validation of the data 4
     try{
@@ -53,17 +53,9 @@ app.post("/login",async(req,res)=>{
         res.status(400).send("Error: "+err.message)
     }
 })
-app.get("/profile",async(req,res)=>{
+app.get("/profile",userauth,async(req,res)=>{
     try{
-    const cookies=req.cookies;
-    const {token}=cookies;
-    if(!token){
-        throw new Error("Invalid token");
-    }
-    const decodedmessage= await jwt.verify(token,"satvik@1324");
-    const {_id}=decodedmessage;
-    console.log("Logged in user"+_id);
-    const user= await User.findById(_id);
+    const user= req.user;
     if(!user){
         throw new Error("User Does not  Exist")
     }
@@ -72,6 +64,10 @@ app.get("/profile",async(req,res)=>{
     }catch(err){
         throw new Error("Error: "+err.message);
     }
+})
+app.post("/sendconnectionrequest",userauth,(req,res)=>{
+    const user=req.user;
+    res.send(user.firstName +" is send connection request")
 })
 app.get("/user",async(req,res)=>{
     const userEmail=req.body.emailId;
