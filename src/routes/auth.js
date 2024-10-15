@@ -3,6 +3,7 @@ const Authrouter=express.Router();
 const {validateSignUpdata}=require("../Utils/validation.js")
 const bcrypt=require("bcrypt");  
 const User = require("../models/user.js");
+// const user=require("..models/user.js")
 Authrouter.post("/signup",async(req,res)=>{
     // validation of the data 4
     try{
@@ -32,7 +33,7 @@ Authrouter.post("/login",async(req,res)=>{
         if(!user){
             throw new Error("Invalid credential");
         }
-        const ispasswordvalid=await user.ispasswordvalid(password);    
+        const ispasswordvalid=await user.validatepassword(password);    
         if(ispasswordvalid){
             // create a jwt token
             const token= await user.getJWT();   
@@ -48,7 +49,10 @@ Authrouter.post("/login",async(req,res)=>{
         res.status(400).send("Error: "+err.message)
     }
 })
-Authrouter.post("/signout",async(req,res)=>{
-    
+Authrouter.post("/logout",async(req,res)=>{
+    res.cookie("token",null,{
+        expires:new Date(Date.now()),
+    })
+    res.send("Logout successful");
 })
 module.exports=Authrouter; 

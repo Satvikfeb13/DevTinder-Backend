@@ -2,7 +2,7 @@ const express= require("express");
 const connectDB=require("./Config/database.js")
 const app=express();
 const cookiepasrser=require("cookie-parser");
-const User=require("./models/user.js");
+const user=require("./models/user.js");
 app.use(express.json());
 app.use(cookiepasrser()); 
 const Authrouter=require("./routes/auth.js");
