@@ -33,12 +33,12 @@ requestrouter.post("/request/send/:status/:toUserId", userauth, async (req, res)
                 })
         }
         // console.log(toUserId);
-        const Userexist = await User.findById(toUserId);
-        if (!Userexist) {
+        const touser = await User.findById(toUserId);
+        if (!touser) {
                 return res
-                .status(400)
-                .send({
-                    message:"User Not found"
+                .status(404)
+                .json({
+                    message:"User not found"
                 })
 
         }
@@ -47,11 +47,42 @@ requestrouter.post("/request/send/:status/:toUserId", userauth, async (req, res)
         });
         const data = await Connectionrequest.save();
         res.json({
-            message: "Connection Request Send Successfully",
+            message: req.user.firstName+" is "+status+" in  "+touser.firstName,
             data
         })
     } catch (error) {
         res.status(400).send("Err: " + error.message);
     }
 })
-module.exports = requestrouter;
+requestrouter.post("/request/review/:status/:requestId",userauth,async(req,res)=>{
+  try{
+    const loggedinuser=req.user;
+    const {status,requestId}=req.params;
+    const allowedstatus=['accepted','rejected'];
+    if(!allowedstatus.includes(status)){
+       return res
+       .status(400)
+       .json({
+        message:"Invalid Status "+status
+       })
+    }
+    const connectionRequest= await ConnectionRequest.findOne({
+        _id:requestId,
+        toUserId:loggedinuser._id,
+        status:"interested"
+    })
+    if(!connectionRequest){
+        return res
+        .status(404)
+        .json({message: "connection request not found"})
+        
+    }
+    connectionRequest.status=status;
+    const data= await connectionRequest.save();
+    res.json({message:`${loggedinuser.firstName} has ${status} the connection request.`,data})
+  }catch(err){
+    res.status(400).send("Err: "+err.message);
+  }
+
+})
+module.exports = requestrouter; 0
