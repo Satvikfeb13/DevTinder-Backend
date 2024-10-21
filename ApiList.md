@@ -16,11 +16,9 @@ POST/request/send/ignored/:userId
 POST/request/review/accept/:receivedId
 POST/request/review/reject/:receivedId
 
-## Refresh route
-GET/user/refresh
-userauth
+## userauth
 GET/user/connection
-GET/user/request
+GET/user/request/received
 GET/user/feed
 
  

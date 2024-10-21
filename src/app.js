@@ -8,9 +8,11 @@ app.use(cookiepasrser());
 const Authrouter=require("./routes/auth.js");
 const profilerouter=require("./routes/profile.js");
 const requestrouter=require("./routes/request.js");
+const userrouter = require("./routes/user.js");
 app.use("/",Authrouter);
 app.use("/",profilerouter);
 app.use("/",requestrouter);
+app.use("/",userrouter);
 // app.get("/user",async(req,res)=>{
 //     const userEmail=req.body.emailId;
 //     const user= await User.find({emailId:userEmail});

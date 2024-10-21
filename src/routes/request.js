@@ -2,7 +2,6 @@ const express = require("express");
 const User = require("../models/user.js")
 const { userauth } = require("../middlewares/auth.js");
 const ConnectionRequest = require("../models/connectionrequest.js");
-const connectionrequest = require("../models/connectionrequest.js");
 const requestrouter = express.Router();
 requestrouter.post("/request/send/:status/:toUserId", userauth, async (req, res) => {
     try {
@@ -85,4 +84,4 @@ requestrouter.post("/request/review/:status/:requestId",userauth,async(req,res)=
   }
 
 })
-module.exports = requestrouter; 0
+module.exports = requestrouter; 

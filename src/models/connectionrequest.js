@@ -2,6 +2,7 @@ const mongoose=require("mongoose");
 const connectionrequesstschema= new mongoose.Schema({
     fromUserId:{
         type:mongoose.Schema.Types.ObjectId,
+        ref:"User",
         require:true
     },
     toUserId:{
